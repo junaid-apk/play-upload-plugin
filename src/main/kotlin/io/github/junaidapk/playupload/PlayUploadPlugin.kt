@@ -28,7 +28,9 @@ class PlayUploadPlugin : Plugin<Project> {
             .map { File(it) },
         ),
       )
-      closedTrack.convention("alpha")
+      formFactor.convention("")
+      closedTrack.convention(formFactor.map { trackName(it, "alpha") })
+      internalTrack.convention(formFactor.map { trackName(it, "internal") })
       releaseNotesLanguage.convention("en-US")
       releaseStatus.convention("completed")
       userFraction.convention(0.1)
@@ -80,7 +82,7 @@ internal object AndroidTasks {
       common("Builds the bundle and releases it on the internal testing track")
       release()
       this.bundle.set(bundle)
-      track.set("internal")
+      track.set(extension.internalTrack)
     }
     tasks.register("playClosed$suffix", PlayTrackUploadTask::class.java) {
       common("Builds the bundle and releases it on the closed testing track")
@@ -91,8 +93,12 @@ internal object AndroidTasks {
     tasks.register("playPromote$suffix", PlayPromoteTask::class.java) {
       common("Moves the newest release between tracks without rebuilding (--from, --to)")
       release()
-      fromTrack.convention("internal")
+      fromTrack.convention(extension.internalTrack)
       toTrack.convention(extension.closedTrack)
     }
   }
 }
+
+/** Play names form-factor tracks `<formFactor>:<track>`, e.g. `wear:alpha`; phone tracks have no prefix. */
+internal fun trackName(formFactor: String, track: String): String =
+  if (formFactor.isBlank()) track else "${formFactor.trim()}:$track"

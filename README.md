@@ -79,7 +79,9 @@ play-upload = { id = "io.github.junaid-apk.play-upload", version.ref = "playUplo
 ```kotlin
 playUpload {
   serviceAccountKey = file("/path/to/key.json") // default: -PplayKey / $PLAY_SERVICE_ACCOUNT_KEY
+  formFactor = "wear"                           // Wear OS module: uses wear:internal / wear:alpha (default: phone)
   closedTrack = "alpha"                         // or the name of a custom closed track
+  internalTrack = "internal"
   releaseNotes = "Bug fixes"
   releaseNotesLanguage = "en-US"
   releaseStatus = "completed"                   // "draft" for apps that were never published
