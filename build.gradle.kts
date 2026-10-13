@@ -5,7 +5,7 @@ plugins {
 
 // JitPack builds the tag and serves it as com.github.<owner>:play-upload-plugin:<tag>.
 group = "com.github.junaid-apk"
-version = "1.0.0"
+version = "1.0.1"
 
 kotlin { jvmToolchain(17) }
 
@@ -16,12 +16,24 @@ dependencies {
 }
 
 gradlePlugin {
+  // One artifact only: with the extra plugin-marker publication JitPack treats the repo as
+  // multi-module and serves it under com.github.junaid-apk.play-upload-plugin instead.
+  isAutomatedPublishing = false
   plugins {
     register("playUpload") {
       id = "io.github.junaid-apk.play-upload"
       implementationClass = "io.github.junaidapk.playupload.PlayUploadPlugin"
       displayName = "Play Upload"
       description = "Uploads Android App Bundles to Google Play (internal sharing, testing tracks) via the Play Developer API."
+    }
+  }
+}
+
+publishing {
+  publications {
+    register<MavenPublication>("release") {
+      artifactId = "play-upload-plugin"
+      from(components["java"])
     }
   }
 }

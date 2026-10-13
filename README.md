@@ -63,13 +63,13 @@ Then add the plugin in `app/build.gradle.kts`:
 ```kotlin
 plugins {
   id("com.android.application")
-  id("io.github.junaid-apk.play-upload") version "1.0.0"
+  id("io.github.junaid-apk.play-upload") version "1.0.1"
 }
 ```
 If you use a version catalog:
 ```toml
 [versions]
-playUpload = "1.0.0"
+playUpload = "1.0.1"
 [plugins]
 play-upload = { id = "io.github.junaid-apk.play-upload", version.ref = "playUpload" }
 ```
